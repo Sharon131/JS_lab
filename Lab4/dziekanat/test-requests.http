@@ -1,0 +1,194 @@
+### GET request with a header
+PUT http://localhost:8080/teachers/
+Content-Type: application/x-www-form-urlencoded
+
+id=99&firstName=Jeff&lastName=Odersky
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 99, "Wrong ID");
+  client.assert(response.body['firstName'] === "Jeff", "Wrong firstName");
+  client.assert(response.body['lastName'] === "Odersky", "Wrong lastName");
+});
+%}
+
+###
+GET http://localhost:8080/teachers/99
+Accept: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 99, "Wrong ID");
+  client.assert(response.body['firstName'] === "Jeff", "Wrong firstName");
+  client.assert(response.body['lastName'] === "Odersky", "Wrong lastName");
+});
+%}
+###
+POST http://localhost:8080/teachers/
+Content-Type: application/x-www-form-urlencoded
+
+id=99&firstName=Jeffrey&lastName=Odersky
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 99, "Wrong ID");
+  client.assert(response.body['firstName'] === "Jeffrey", "Wrong firstName");
+  client.assert(response.body['lastName'] === "Odersky", "Wrong lastName");
+});
+%}
+###
+
+#DELETE http://localhost:8080/teachers/
+#Content-Type: application/x-www-form-urlencoded
+#
+#id=99
+#> {%
+#client.test("Request executed successfully", function() {
+#  client.assert(response.status === 200, "Response status is not 200");
+#});
+#%}
+####
+
+PUT http://localhost:8080/students/
+Content-Type: application/x-www-form-urlencoded
+
+id=69&firstName=Student1&lastName=Odersky
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 69, "Wrong ID");
+  client.assert(response.body['firstName'] === "Student1", "Wrong firstName");
+  client.assert(response.body['lastName'] === "Odersky", "Wrong lastName");
+});
+%}
+
+###
+PUT http://localhost:8080/students/
+Content-Type: application/x-www-form-urlencoded
+
+id=96&firstName=Student2&lastName=Odersky
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 96, "Wrong ID");
+  client.assert(response.body['firstName'] === "Student2", "Wrong firstName");
+  client.assert(response.body['lastName'] === "Odersky", "Wrong lastName");
+});
+%}
+
+###
+PUT http://localhost:8080/students/
+Content-Type: application/x-www-form-urlencoded
+
+id=97&firstName=Student3&lastName=Odersky
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 97, "Wrong ID");
+  client.assert(response.body['firstName'] === "Student3", "Wrong firstName");
+  client.assert(response.body['lastName'] === "Odersky", "Wrong lastName");
+});
+%}
+
+###
+PUT http://localhost:8080/subjects/
+Content-Type: application/x-www-form-urlencoded
+
+id=997&name=sample_subject
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 997, "Wrong ID");
+  client.assert(response.body['name'] === "sample_subject", "Wrong name");
+});
+%}
+
+###
+PUT http://localhost:8080/subjects/
+Content-Type: application/x-www-form-urlencoded
+
+id=999&name=sample_subject_2
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 999, "Wrong ID");
+  client.assert(response.body['name'] === "sample_subject_2", "Wrong name");
+});
+%}
+
+###
+PUT http://localhost:8080/student_subject/
+Content-Type: application/x-www-form-urlencoded
+
+id=5&studentId=69&subjectId=997
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 5, "Wrong ID");
+  client.assert(response.body['studentId'] === 69, "Wrong studentId");
+  client.assert(response.body['subjectId'] === 997, "Wrong subjectId");
+});
+%}
+
+###
+PUT http://localhost:8080/student_subject/
+Content-Type: application/x-www-form-urlencoded
+
+id=6&studentId=96&subjectId=997
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 6, "Wrong ID");
+  client.assert(response.body['studentId'] === 96, "Wrong studentId");
+  client.assert(response.body['subjectId'] === 997, "Wrong subjectId");
+});
+%}
+
+###
+PUT http://localhost:8080/student_subject/
+Content-Type: application/x-www-form-urlencoded
+
+id=7&studentId=97&subjectId=999
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body['id'] === 7, "Wrong ID");
+  client.assert(response.body['studentId'] === 97, "Wrong studentId");
+  client.assert(response.body['subjectId'] === 999, "Wrong subjectId");
+});
+%}
+
+###
+GET http://localhost:8080/students-by-subject/999
+Accept: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body.length === 1, "Wrong length");
+});
+%}
+###
+GET http://localhost:8080/students-by-subject/997
+Accept: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.body.length === 2, "Wrong length");
+});
+%}
+###
+
+
+
