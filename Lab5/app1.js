@@ -9,9 +9,13 @@ var y = 2;
 app.use(logger('dev'));                         // Place an HTTP request recorder on the stack — each request will be logged in the console in 'dev' format
 app.use(express.static(__dirname + '/public')); // Place the built-in middleware 'express.static' — static content (files .css, .js, .jpg, etc.) will be provided from the 'public' directory
 
+app.get('/add/:x/:y', (req, res) => {
+    res.send('<h2>' + req.params.x+' + '+req.params.y+' = '+String(parseInt(req.params.x)+parseInt(req.params.y))+'</h2>');
+})
+
 // Route definitions
 app.get('/', function (req, res) {     // The first route
-    res.send('<h1>' + String(x) + ' + ' + String(y) + ' = ' + String(eval(x+y)) + '</h1>'); // Send a response to the browser
+    res.send('<h2>' + String(x) + ' + ' + String(y) + ' = ' + String(eval(x+y)) + '</h2>'); // Send a response to the browser
     //res.send('<h2>' + String(x) + ' + ' + String(y) + ' = ' + String(eval(x+y)) + '</h2>');
 })
 
@@ -19,3 +23,5 @@ app.get('/', function (req, res) {     // The first route
 app.listen(3000, function () {
     console.log('The application is available on port 3000');
 });
+
+exports.app = app

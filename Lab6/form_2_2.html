@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Form 2.2
+    </title>
+    <script>
+
+    /****************************************************************************/
+    /* Function that performs (asynchronous) query to the web server using AJAX */
+    /****************************************************************************/
+    function requestAJAX() {
+      // Create an object representing the request to the web server - see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+      var xhr = new XMLHttpRequest();
+
+      // Registration of a (user) function that will process the response received from the server
+      xhr.onreadystatechange = () => response(xhr);
+
+      // Execution of the (asynchronous) query to the web server
+      xhr.open('GET', '/submit', true);
+      xhr.send(null);
+      // Examples of the use of the above methods - see https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
+    }
+
+    /*****************************************************************/
+    /* The function that processes the AJAX response from the server */
+    /*****************************************************************/
+    function response(xhr) {
+      try {
+        if (xhr.readyState == XMLHttpRequest.DONE) { // If the response is ready
+          if (xhr.status == 200) {                   // If the request was correct
+
+            // If the data you receive is a plain text or a JSON document, use the following code
+            var received_data = xhr.responseText; // Get a response in the form of a string
+            console.log(received_data);          // and display it
+
+            // If the data you receive is an HTML or XML document, use the following code
+            // var xmlDoc = xhr.responseXML; //Receive the answer in the form of object 'XmlDocument', which can be accessed using DOM methods - see https://www.w3.org/TR/domcore/
+            // console.log(xmlDoc);
+          }
+          else
+            console.log('There was a problem with this request.');
+        }
+      }
+      catch (e) {
+        console.log('Exception caught: ' + e.description);
+      }
+    }
+
+    //
+
+    setInterval( () => {
+      document.getElementsByName('now_date')[0].innerText = (new Date()).toString();
+      const area = document.getElementById('area').value;
+      const location = document.getElementById('location').value
+
+      fetch('/' + area + '/' + location, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then((response) => {
+        
+        response.text().then( (text) => {
+          
+          document.getElementById('read_date').innerText = JSON.parse(text)['datetime'];
+          
+        });
+
+      })
+      .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error);
+      });
+
+    } , 1000);
+
+    </script>
+  </head>
+  <body>
+    <main>
+      <p name="now_date"></p>
+      <form method="get"
+            action="/submit">
+        <input type="text" id = 'area'>
+        <input type="text" id = 'location'>
+      </form>
+      <p id="read_date"></p>
+
+    </main>
+  </body>
+</html>

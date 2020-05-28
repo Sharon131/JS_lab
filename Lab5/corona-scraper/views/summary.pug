@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    table.table.table-striped
+        tr
+            each header in ['Country', parameter]
+                th= header
+
+        each record in records
+            tr
+                td= record.country
+                td= record.parameter

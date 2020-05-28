@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="form-header">
+    <h2>Create student</h2>
+</div>
+<div>
+    <div class="form-field">
+        <label for="id">ID</label>
+        <input class="input" id="id" name="id"/>
+    </div>
+    <div class="form-field">
+        <label for="password">Password</label>
+        <input class="input" id="password" name="password"/>
+    </div>
+    <div class="form-actions">
+        <button class="btn" type="submit" onclick="submit()">Send</button>
+    </div>
+</div>
+<pre id="json"></pre>
+
+<script>
+    function submit(){
+        fetch("http://localhost:3000/students", {
+            method: 'POST',
+            body: JSON.stringify({
+                id: document.getElementById("id").value,
+                password: document.getElementById("password").value
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(xd => {
+                document.getElementById("json").textContent = JSON.stringify(xd);
+            })
+        })
+    }
+</script>
+
+</body>
+</html>

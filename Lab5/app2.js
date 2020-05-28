@@ -13,6 +13,10 @@ app.set('view engine', 'pug');          //Use the 'Pug' template system
 app.use(logger('dev'));                         // Add an HTTP request recorder to the stack — every request will be logged in the console in the 'dev' format
 app.use(express.static(__dirname + '/public')); // Place the built-in middleware 'express.static' — static content (files .css, .js, .jpg, etc.) will be provided from the 'public' directory
 
+app.get('/add/:x/:y', (req, res) => {
+    res.render('index', {var1: req.params.x, var2: req.params.y, result: String(parseInt(req.params.x)+parseInt(req.params.y)), pretty:true}); // Render the 'index' view in 'pretty' mode — the resulting HTML code will be indented — the 'pretty' option has the 'deprecated' status — in the future it will not be supported
+})
+
 // Route definitions
 app.get('/', function (req, res) {      // The first route
     res.render('index', {var1: String(x), var2: String(y), result: eval(x+y), pretty:true}); // Render the 'index' view in 'pretty' mode — the resulting HTML code will be indented — the 'pretty' option has the 'deprecated' status — in the future it will not be supported
@@ -23,3 +27,5 @@ app.get('/', function (req, res) {      // The first route
 app.listen(3000, function () {
     console.log('The application is available on port 3000');
 });
+
+exports.app = app

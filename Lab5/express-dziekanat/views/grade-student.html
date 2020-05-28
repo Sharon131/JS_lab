@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="form-header">
+    <h2>Teacher - Add Grade</h2>
+</div>
+<div>
+    <div class="form-field">
+        <label for="id">Teacher ID</label>
+        <input class="input" id="id" name="id"/>
+    </div>
+    <div class="form-field">
+        <label for="password">Password</label>
+        <input class="input" id="password" name="password"/>
+    </div>
+    <div class="form-field">
+        <label for="studentId">Student ID</label>
+        <input class="input" id="studentId" name="studentId"/>
+    </div>
+    <div class="form-field">
+        <label for="subject">Subject</label>
+        <input class="input" id="subject" name="subject"/>
+    </div>
+    <div class="form-field">
+        <label for="mark">Grade</label>
+        <input class="input" id="mark" name="mark"/>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" type="submit" onclick="submit()">Send</button>
+    </div>
+</div>
+<pre id="json"></pre>
+
+<script>
+    function getValue(fieldId){
+        return document.getElementById(fieldId).value
+    }
+
+    function submit(){
+        fetch("http://localhost:3000/teachers/marks", {
+            method: 'PUT',
+            body: JSON.stringify({
+                id: getValue("id"),
+                password: getValue("password"),
+                studentId: getValue("studentId"),
+                subject: getValue("subject"),
+                mark: getValue("mark")
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(xd => {
+                document.getElementById("json").textContent = JSON.stringify(xd);
+            })
+        })
+    }
+</script>
+
+</body>
+</html>

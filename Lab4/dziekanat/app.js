@@ -178,6 +178,14 @@ const crud = (entity) => (method, url, requestBody) => (response) => {
             response.write(JSON.stringify(e['dataValues']))
             response.end()
         })
+    } else if(method === "GET"){
+        entity.findAll().then((e) => {
+            console.log(e)
+            const x = e.map(s => s['dataValues'])
+            console.log(x)
+            response.write(JSON.stringify(x))
+            response.end()
+        })
     } else if(method === "PUT"){
         entity.create(requestBody).then(() => {
             entity.findByPk(requestBody['id']).then((e) => {

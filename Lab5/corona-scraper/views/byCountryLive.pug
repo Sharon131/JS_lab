@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    table.table.table-striped
+        tr
+            each header in ['Date', ...countries]
+                th= header
+
+        each record in records
+            tr
+                each header in ['Date', ...countries]
+                    td= record[header]

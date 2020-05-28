@@ -1,0 +1,9 @@
+GET http://localhost:3000/byCountryLive/2020-03-01T00:00:00Z/2020-04-01T00:00:00Z/south-africa/barbados/lithuania
+Accept: application/json
+
+###
+
+GET http://localhost:3000/summary/NewConfirmed
+Accept: application/json
+
+###
