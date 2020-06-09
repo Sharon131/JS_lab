@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="form-header">
+    <h2>Teacher - Add Grade</h2>
+</div>
+<div>
+    <div class="form-field">
+        <label for="id">Teacher ID</label>
+        <input class="input" id="id" name="id"/>
+    </div>
+    <div class="form-field">
+        <label for="password">Password</label>
+        <input class="input" id="password" name="password"/>
+    </div>
+    <div class="form-field">
+        <label for="student-search">Student search</label>
+        <input class="input" id="student-search" name="student-search"/>
+    </div>
+    <select id="student-search-values">
+    </select>
+
+    <div class="form-field">
+        <label for="studentId">Student ID</label>
+        <input class="input" id="studentId" name="studentId"/>
+    </div>
+    <div class="form-field">
+        <label for="subject">Subject</label>
+        <input class="input" id="subject" name="subject"/>
+    </div>
+    <div class="form-field">
+        <label for="mark">Grade</label>
+        <input class="input" id="mark" name="mark"/>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" type="submit" onclick="submit()">Send</button>
+    </div>
+</div>
+<pre id="json"></pre>
+
+<script>
+    document.getElementById("student-search").addEventListener('input',() => suggestStudent())
+    document.getElementById("student-search-values").addEventListener('change', () => applySelectedStudent())
+
+    function getValue(fieldId){
+        return document.getElementById(fieldId).value
+    }
+
+    function submit(){
+        fetch("http://localhost:3000/teachers/marks", {
+            method: 'PUT',
+            body: JSON.stringify({
+                id: getValue("id"),
+                password: getValue("password"),
+                studentId: getValue("studentId"),
+                subject: getValue("subject"),
+                mark: getValue("mark")
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(xd => {
+                document.getElementById("json").textContent = JSON.stringify(xd);
+            })
+        })
+    }
+
+    function suggestStudent() {
+        let typed = document.getElementById("student-search").value
+        if(!typed){
+            typed = ''
+        }
+        fetch("http://localhost:3000/students/by-name", {
+            method: 'POST',
+            body: JSON.stringify({
+                search: typed,
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(students => {
+                const myNode = document.getElementById("student-search-values")
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.lastChild);
+                }
+
+                students.forEach(student => {
+                    const element = document.createElement("option")
+                    element.setAttribute("value", student.id)
+
+                    const innerText = document.createTextNode(student.surname + ' ' + student.name)
+                    element.appendChild(innerText)
+                    document.getElementById("student-search-values").appendChild(element)
+                })
+
+                if(students.length === 1){
+                    applySelectedStudent()
+                } else {
+                    document.getElementById('studentId').value = ''
+                }
+            })
+        })
+    }
+
+    function applySelectedStudent() {
+        console.log('document.getElementById(\'student-search-values\').value', document.getElementById('student-search-values').value)
+        document.getElementById('studentId').value = document.getElementById('student-search-values').value
+    }
+</script>
+
+</body>
+</html>

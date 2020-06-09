@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="form-header">
+    <h2>Create student</h2>
+</div>
+<div>
+    <div class="form-field">
+        <label for="name">Name</label>
+        <input class="input" id="name" name="name"/>
+    </div>
+    <div class="form-field">
+        <label for="surname">Surname</label>
+        <input class="input" id="surname" name="surname"/>
+    </div>
+    <div class="form-field">
+        <label for="login">Login</label>
+        <input class="input" id="login" name="surname"/>
+    </div>
+    <div class="form-field">
+        <label for="password">Password</label>
+        <input class="input" id="password" name="password"/>
+    </div>
+    <div class="form-actions">
+        <button class="btn" type="submit" onclick="submit()">Send</button>
+    </div>
+</div>
+<h1>Taken logins:</h1>
+<pre id="taken-logins"></pre>
+
+<br><br><br>
+<pre id="json"></pre>
+
+<script>
+    document.getElementById("login").addEventListener('input',() => takenLogins() )
+
+    function submit(){
+        fetch("http://localhost:3000/students", {
+            method: 'PUT',
+            body: JSON.stringify({
+                name: document.getElementById("name").value,
+                surname: document.getElementById("surname").value,
+                login: document.getElementById("login").value,
+                password: document.getElementById("password").value
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(xd => {
+                document.getElementById("json").textContent = JSON.stringify(xd);
+            })
+        })
+    }
+
+    function takenLogins(){
+        let typed = document.getElementById("login").value
+        if(!typed){
+            typed = ''
+        }
+        fetch("http://localhost:3000/students/taken-logins", {
+            method: 'POST',
+            body: JSON.stringify({
+                search: typed,
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(xd => {
+                document.getElementById("taken-logins").textContent = JSON.stringify(xd);
+            })
+        })
+    }
+
+    takenLogins()
+</script>
+
+</body>
+</html>
